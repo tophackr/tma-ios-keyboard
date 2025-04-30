@@ -1,42 +1,27 @@
 import {
     mockTelegramEnv,
     viewportHeight,
-    viewportSafeAreaInsetTop
+    ViewportState
 } from '@telegram-apps/sdk-react'
-import { type PropsWithChildren, useEffect, useRef, useState } from 'react'
+import { type PropsWithChildren, useRef, useState } from 'react'
 
 export function IosKeyboardFix({ children }: PropsWithChildren) {
     const initialHeight = useRef(viewportHeight())
 
     const [currentHeight, setCurrentHeight] = useState(initialHeight.current)
-    const [currentTop, setCurrentTop] = useState(viewportSafeAreaInsetTop())
-    const [keyboardOffset, setKeyboardOffset] = useState(
-        currentHeight - viewportHeight()
-    )
-
-    useEffect(() => {
-        const newTop = viewportSafeAreaInsetTop()
-        const newHeight = viewportHeight()
-
-        console.log('newBottom', newTop)
-
-        setCurrentTop(prevTop => {
-            if (newTop !== prevTop) {
-                setCurrentHeight(newHeight)
-                return newTop
-            }
-            return prevTop
-        })
-
-        if (newHeight !== currentHeight) {
-            console.log('newHeight', newHeight, currentHeight)
-            setKeyboardOffset(newHeight - viewportHeight())
-        }
-    }, [currentHeight])
+    const [keyboardOffset, setKeyboardOffset] = useState(0)
 
     mockTelegramEnv({
-        onEvent(e, next) {
-            console.log('onEvent', e);
+        onEvent([event, data], next) {
+            console.log('onEvent', event, data);
+
+            if (event === 'viewport_changed') {
+                setKeyboardOffset(currentHeight - (data as ViewportState).height)
+            }
+
+            if (event === 'safe_area_changed') {
+                setCurrentHeight(viewportHeight())
+            }
 
             return next()
         }
@@ -44,10 +29,7 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
 
     console.log(
         'render',
-        currentTop,
         keyboardOffset,
-        currentHeight,
-        viewportHeight()
     )
 
     return (
