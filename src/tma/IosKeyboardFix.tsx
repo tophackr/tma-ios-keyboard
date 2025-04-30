@@ -40,7 +40,7 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
     )
 
     return (
-        <div style={{ marginBottom: keyboardOffset > 0 ? keyboardOffset : 0 }}>
+        <div style={{ marginBottom: keyboardOffset > 0 ? keyboardOffset * 2 : 0 }}>
             {children}
         </div>
     )
