@@ -1,8 +1,7 @@
 import {
-    mockTelegramEnv,
+    on,
     viewportHeight,
-    viewportSafeAreaInsetTop,
-    ViewportState
+    viewportSafeAreaInsetTop
 } from '@telegram-apps/sdk-react'
 import { type PropsWithChildren, useEffect, useRef, useState } from 'react'
 
@@ -20,27 +19,20 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
 
     useEffect(() => {
         console.log(keyboardOffset);
-        mockTelegramEnv({
-            onEvent([event, data], next) {
-                console.log('onEvent', event, data);
-    
-                if (event === 'viewport_changed') {
-                    console.log('currentHeight', currentHeight, currentHeight - (data as ViewportState).height);
-                    setKeyboardOffset(currentHeight - (data as ViewportState).height)
-                }
-    
-                if (event === 'safe_area_changed') {
-                    if (currentTop !== (data as ViewportSafeArea).top) {
-                        console.log('viewportHeight', viewportHeight());
-                        setCurrentHeight(viewportHeight())
-                        setCurrentTop((data as ViewportSafeArea).top)
-                    }
-                }
-    
-                return next()
-            }
-        })
     }, [keyboardOffset, currentHeight, currentTop])
+
+    on('viewport_changed', data => {
+        console.log('currentHeight', currentHeight, currentHeight - data.height);
+        setKeyboardOffset(currentHeight - data.height)
+    })
+
+    on('safe_area_changed', data => {
+        if (currentTop !== (data as ViewportSafeArea).top) {
+            console.log('viewportHeight', viewportHeight());
+            setCurrentHeight(viewportHeight())
+            setCurrentTop((data as ViewportSafeArea).top)
+        }
+    })
 
     console.log(
         'render',
