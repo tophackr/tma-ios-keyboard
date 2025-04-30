@@ -1,7 +1,7 @@
+import { TelegramProvider } from '@/tma/provider'
 import '@telegram-apps/telegram-ui/dist/styles.css'
 import { Viewport } from 'next'
 import { type JSX, type PropsWithChildren, memo } from 'react'
-import { TelegramProvider } from '../../tma/provider'
 import './globals.css'
 
 export const viewport: Viewport = {
