@@ -4,7 +4,7 @@ import {
     viewportHeight,
     viewportSafeAreaInsetTop
 } from '@telegram-apps/sdk-react'
-import { type PropsWithChildren, useRef, useState } from 'react'
+import { type PropsWithChildren, useEffect, useRef, useState } from 'react'
 
 export function IosKeyboardFix({ children }: PropsWithChildren) {
     const initialHeight = useRef(0)
@@ -29,6 +29,29 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
             setCurrentTop(data.top)
         }
     })
+
+    useEffect(() => {
+        let lastFocused: HTMLInputElement | null = null
+    
+        const onFocusIn = (e: FocusEvent) => {
+          if (e.target instanceof HTMLInputElement) {
+            lastFocused = e.target
+    
+            setTimeout(() => {
+              if (document.activeElement === lastFocused) {
+                lastFocused?.blur()
+                lastFocused?.focus()
+              }
+            }, 300)
+          }
+        }
+    
+        document.addEventListener("focusin", onFocusIn)
+    
+        return () => {
+          document.removeEventListener("focusin", onFocusIn)
+        }
+      }, [])
 
     const marginBottom = keyboardOffset > 0
         ? keyboardOffset + (keyboardOffset / (isFullscreen() ? 2 : 4))
