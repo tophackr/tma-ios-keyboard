@@ -6,7 +6,7 @@ import {
 import { type PropsWithChildren, useRef, useState } from 'react'
 
 export function IosKeyboardFix({ children }: PropsWithChildren) {
-    const initialHeight = useRef(viewportHeight())
+    const initialHeight = useRef(0)
     const initialTop = useRef(viewportSafeAreaInsetTop())
 
     const [currentHeight, setCurrentHeight] = useState(initialHeight.current)
@@ -15,6 +15,11 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
 
     on('viewport_changed', data => {
         console.log(currentHeight, data.height);
+        if (initialHeight.current === 0) {
+            initialHeight.current = data.height
+            setCurrentHeight(data.height)
+        }
+
         setKeyboardOffset(currentHeight - data.height)
     })
 
