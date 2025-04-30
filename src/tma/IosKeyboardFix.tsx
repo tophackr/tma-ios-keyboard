@@ -31,7 +31,7 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
     })
 
     const marginBottom = keyboardOffset > 0
-        ? keyboardOffset + (isFullscreen() ? keyboardOffset / 2 : 0)
+        ? keyboardOffset + (keyboardOffset / (isFullscreen() ? 2 : 4))
         : 0
 
     return (
