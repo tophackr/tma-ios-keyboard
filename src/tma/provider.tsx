@@ -33,9 +33,10 @@ const RootInner = memo(function RootInner({
     )
 })
 
-export const TelegramProvider = memo(function TelegramProvider(
-    props: PropsWithChildren
-) {
+export const TelegramProvider = memo(function TelegramProvider({
+    children,
+    ...props
+}: PropsWithChildren) {
     // Unfortunately, Telegram Mini Apps does not allow us to use all features of
     // the Server Side Rendering. That's why we are showing loader on the server
     // side.
@@ -43,9 +44,11 @@ export const TelegramProvider = memo(function TelegramProvider(
 
     return didMount ? (
         <ErrorBoundary fallback={ErrorPage}>
-            <IosKeyboardFix>
-                <RootInner {...props} />
-            </IosKeyboardFix>
+            <RootInner {...props}>
+                <IosKeyboardFix>
+                    {children}
+                </IosKeyboardFix>
+            </RootInner>
         </ErrorBoundary>
     ) : (
         <>Loading data...</>

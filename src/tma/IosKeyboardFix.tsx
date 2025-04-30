@@ -3,7 +3,7 @@ import {
     viewportHeight,
     ViewportState
 } from '@telegram-apps/sdk-react'
-import { type PropsWithChildren, useRef, useState } from 'react'
+import { type PropsWithChildren, useEffect, useRef, useState } from 'react'
 
 export function IosKeyboardFix({ children }: PropsWithChildren) {
     const initialHeight = useRef(viewportHeight())
@@ -26,6 +26,10 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
             return next()
         }
     })
+
+    useEffect(() => {
+        console.log(keyboardOffset);
+    }, [keyboardOffset])
 
     console.log(
         'render',
