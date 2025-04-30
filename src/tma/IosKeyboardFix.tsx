@@ -18,22 +18,15 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
     const [keyboardOffset, setKeyboardOffset] = useState(0)
 
     on('viewport_changed', data => {
-        console.log('currentHeight', currentHeight, currentHeight - data.height);
         setKeyboardOffset(currentHeight - data.height)
     })
 
     on('safe_area_changed', data => {
         if (currentTop !== (data as ViewportSafeArea).top) {
-            console.log('viewportHeight', viewportHeight());
             setCurrentHeight(viewportHeight())
             setCurrentTop((data as ViewportSafeArea).top)
         }
     })
-
-    console.log(
-        'render',
-        keyboardOffset,
-    )
 
     return (
         <div style={{ marginBottom: keyboardOffset > 0 ? keyboardOffset + keyboardOffset / 2 : 0 }}>
