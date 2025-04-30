@@ -3,7 +3,7 @@ import {
     viewportHeight,
     viewportSafeAreaInsetTop
 } from '@telegram-apps/sdk-react'
-import { type PropsWithChildren, useEffect, useRef, useState } from 'react'
+import { type PropsWithChildren, useRef, useState } from 'react'
 
 interface ViewportSafeArea {
     top: number
@@ -17,9 +17,9 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
     const [currentTop, setCurrentTop] = useState(initialTop.current)
     const [keyboardOffset, setKeyboardOffset] = useState(0)
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log(keyboardOffset);
-    }, [keyboardOffset, currentHeight, currentTop])
+    }, [keyboardOffset]) */
 
     on('viewport_changed', data => {
         console.log('currentHeight', currentHeight, currentHeight - data.height);
@@ -40,7 +40,7 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
     )
 
     return (
-        <div style={{ paddingBottom: keyboardOffset > 0 ? keyboardOffset : 0 }}>
+        <div style={{ marginBottom: keyboardOffset > 0 ? keyboardOffset : 0 }}>
             {children}
         </div>
     )
