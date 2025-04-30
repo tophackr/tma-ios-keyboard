@@ -7,32 +7,18 @@ import { IosKeyboardFix } from './IosKeyboardFix'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { ErrorPage } from './components/ErrorPage'
 import { init } from './init'
-import { mockEnv } from './mocks/mockEnv'
 import { useClientOnce } from './useClientOnce'
 import { useDidMount } from './useDidMount'
 
 const RootInner = memo(function RootInner({
     children
 }: PropsWithChildren): JSX.Element {
-    const isDev = process.env.NODE_ENV === 'development'
-
-    // Mock Telegram environment in development mode if needed.
-    useClientOnce(() => {
-        mockEnv(isDev)
-    })
-
     const lp = useMemo(()=> retrieveLaunchParams(), [])
-    const { tgWebAppPlatform: platform } = lp
-    const isApple = ['ios', 'macos'].includes(platform)
-    const debug = true
+    const isApple = ['ios', 'macos'].includes(lp.tgWebAppPlatform)
 
     // Initialize the library.
     useClientOnce(() => {
-        init({
-            debug,
-            eruda: debug,
-            mockForMacOS: platform === 'macos'
-        })
+        init()
     })
 
     const isDark = useSignal(isMiniAppDark)
