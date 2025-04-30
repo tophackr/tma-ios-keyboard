@@ -4,7 +4,7 @@ import { type JSX, type PropsWithChildren, memo } from 'react'
 import { TelegramProvider } from '../../tma/provider'
 import './globals.css'
 
-export const AppViewport: Viewport = {
+export const viewport: Viewport = {
     width: 'device-width',
     initialScale: 1,
     maximumScale: 1,
