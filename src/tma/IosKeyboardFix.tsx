@@ -16,10 +16,12 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
             console.log('onEvent', event, data);
 
             if (event === 'viewport_changed') {
+                console.log('currentHeight', currentHeight - (data as ViewportState).height);
                 setKeyboardOffset(currentHeight - (data as ViewportState).height)
             }
 
             if (event === 'safe_area_changed') {
+                console.log('viewportHeight', viewportHeight());
                 setCurrentHeight(viewportHeight())
             }
 
