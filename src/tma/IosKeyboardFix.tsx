@@ -15,7 +15,6 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
     const [keyboardOffset, setKeyboardOffset] = useState(0)
 
     on('viewport_changed', data => {
-        console.log(currentHeight, data.height);
         if (initialHeight.current === 0) {
             initialHeight.current = data.height
             setCurrentHeight(data.height)
@@ -31,15 +30,12 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
         }
     })
 
+    const marginBottom = keyboardOffset > 0
+        ? keyboardOffset + (isFullscreen() ? keyboardOffset / 2 : 0)
+        : 0
+
     return (
-        <div style={{
-            marginBottom:
-                keyboardOffset > 0
-                    ? keyboardOffset + (
-                        isFullscreen() ? keyboardOffset / 2 : 0
-                    )
-                    : 0
-        }}>
+        <div style={{ marginBottom }}>
             {children}
         </div>
     )
