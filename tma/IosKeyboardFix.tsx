@@ -35,9 +35,8 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
     }, [currentHeight])
 
     mockTelegramEnv({
-        onEvent([e]) {
-            if (e === 'web_') {
-            }
+        onEvent(e) {
+            console.log('onEvent', e);
         }
     })
 
