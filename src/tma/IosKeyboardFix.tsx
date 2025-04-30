@@ -18,6 +18,7 @@ export function IosKeyboardFix({ children }: PropsWithChildren) {
     const [keyboardOffset, setKeyboardOffset] = useState(0)
 
     on('viewport_changed', data => {
+        console.log(currentHeight, data.height);
         setKeyboardOffset(currentHeight - data.height)
     })
 
